@@ -27,7 +27,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     AppState* app_state = new AppState();
     *appstate = app_state;
 
-    SDL_SetAppMetadata("VCPKG Experiment", "1.0", "com.example.renderer-clear");
+    SDL_SetAppMetadata("VCPKG Experiment", "1.0", "com.lucasas.vcpkgexperiment");
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer("VCPKG Experiment", 640, 480, 0, &app_state->window, &app_state->renderer);
     SDL_SyncWindow(app_state->window);

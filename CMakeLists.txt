@@ -5,6 +5,13 @@ find_package(fmt CONFIG REQUIRED)
 find_package(ffmpeg REQUIRED)
 find_package(SDL3 CONFIG REQUIRED)
 
+# set(SDL_TEST OFF CACHE BOOL "Disable SDL3 test building")
+# set(SDL_EXAMPLES OFF CACHE BOOL "Disable SDL3 examples")
+# set(SDL3_DISABLE_DOCS ON CACHE BOOL "Disable building SDL3 documentation")
+# set(SDL_SHARED OFF CACHE BOOL "Build SDL3 as a shared library")
+# set(SDL_STATIC ON CACHE BOOL "Build SDL3 as a static library")
+# add_subdirectory(thirdparty/SDL)
+
 if (WIN32)
 add_executable(VcpkgExperiment sources/main.cpp)
 target_compile_features(VcpkgExperiment PRIVATE cxx_std_20)
@@ -44,7 +51,7 @@ target_link_libraries(
     "-framework CoreAudio"
     "-framework Metal"
 )
-set_target_properties(CallOfTheVoidStar PROPERTIES
+set_target_properties(VcpkgExperiment PROPERTIES
     # Set the Info.plist file for Apple Mobile platforms. Without this file, your app will not launch.
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
     # in Xcode, create a Scheme in the schemes dropdown for the app.
@@ -53,7 +60,7 @@ set_target_properties(CallOfTheVoidStar PROPERTIES
     XCODE_ATTRIBUTE_MARKETING_VERSION "1.0" # Set project version
     XCODE_ATTRIBUTE_VERSIONING_SYSTEM "apple-generic"
     XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-    XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ${AXM_IOS_TEAM_ID}
+    XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ${MY_IOS_TEAM_ID}
     XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1" # 1=iPhone, 2=iPad
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.lucasas.vcpkgexperiment"
     XCODE_ATTRIBUTE_BUNDLE_IDENTIFIER "com.lucasas.vcpkgexperiment"

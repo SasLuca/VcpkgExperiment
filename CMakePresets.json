@@ -62,11 +62,15 @@
       "displayName": "iOS Xcode",
       "description": "Preset to generate an Xcode project for iOS",
       "generator": "Xcode",
+      "toolchainFile": "thirdparty/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES",
         "CMAKE_SYSTEM_NAME": "iOS",
         "CMAKE_OSX_DEPLOYMENT_TARGET": "13.0",
         "CMAKE_OSX_ARCHITECTURES": "arm64;x86_64",
-        "CMAKE_IOS_INSTALL_COMBINED": "ON"
+        "CMAKE_IOS_INSTALL_COMBINED": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "thirdparty/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_MANIFEST_MODE": "ON"
       }
     }
   ],

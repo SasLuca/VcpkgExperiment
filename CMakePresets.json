@@ -7,94 +7,71 @@
   },
   "configurePresets": [
     {
-      "name": "NinjaPreset",
+      "name": "vcpkg",
       "hidden": true,
-      "generator": "Ninja",
       "toolchainFile": "thirdparty/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES",
         "CMAKE_TOOLCHAIN_FILE": "thirdparty/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_MANIFEST_MODE": "ON"
-      },
-      "vendor": {
-        "jetbrains.com/clion": {
-          "toolchain": "Visual Studio Clang"
-        }
       }
     },
     {
-      "name": "Debug",
-      "inherits": "NinjaPreset",
+      "name": "generic-ninja",
+      "hidden": true,
+      "generator": "Ninja",
+      "inherits": "vcpkg",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+      }
+    },
+    {
+      "name": "generic-debug",
+      "inherits": "generic-ninja",
       "description": "Debug build configuration",
       "hidden": false,
-      "binaryDir": "build/cmake-build-debug",
+      "binaryDir": "build/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "Release",
-      "inherits": "NinjaPreset",
+      "name": "generic-release",
+      "inherits": "generic-ninja",
       "description": "Release build configuration",
-      "binaryDir": "build/cmake-build-release",
+      "binaryDir": "build/release",
       "hidden": false,
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "name": "LivePP",
-      "inherits": "Debug",
-      "description": "Debug configuration with Live++ enabled",
-      "hidden": false,
-      "binaryDir": "build/cmake-build-debug-livepp",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      },
-      "cacheVariables": {
-        "USE_LIVE_PP": "ON"
-      }
-    },
-    {
-      "name": "ios-xcode",
+      "name": "ios",
       "displayName": "iOS Xcode",
       "description": "Preset to generate an Xcode project for iOS",
       "generator": "Xcode",
-      "toolchainFile": "thirdparty/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "inherits": "vcpkg",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "YES",
         "CMAKE_SYSTEM_NAME": "iOS",
         "CMAKE_OSX_DEPLOYMENT_TARGET": "13.0",
         "CMAKE_OSX_ARCHITECTURES": "arm64;x86_64",
-        "CMAKE_IOS_INSTALL_COMBINED": "ON",
-        "CMAKE_TOOLCHAIN_FILE": "thirdparty/vcpkg/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_MANIFEST_MODE": "ON"
+        "CMAKE_IOS_INSTALL_COMBINED": "ON"
       }
     }
   ],
   "buildPresets": [
     {
-      "displayName": "Debug",
-      "name": "Debug",
-      "configurePreset": "Debug",
+      "displayName": "Debug Build",
+      "name": "debug-build",
+      "configurePreset": "generic-debug",
       "description": "Build the Debug configuration",
       "hidden": false,
       "jobs": 0
     },
     {
-      "displayName": "HotReload",
-      "name": "HotReload",
-      "configurePreset": "LivePP",
-      "description": "Build the Debug configuration",
-      "hidden": false,
-      "jobs": 0
-    },
-    {
-      "displayName": "Release",
-      "name": "Release",
-      "configurePreset": "Release",
+      "displayName": "Release Build",
+      "name": "release-build",
+      "configurePreset": "generic-release",
       "description": "Build the Release configuration",
       "hidden": false,
       "jobs": 0

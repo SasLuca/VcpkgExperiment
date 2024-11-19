@@ -4,6 +4,12 @@
   "dependencies": [
     {
       "name": "fmt"
+    },
+    {
+      "name": "ffmpeg"
+    },
+    {
+      "name": "sdl3"
     }
   ]
 }

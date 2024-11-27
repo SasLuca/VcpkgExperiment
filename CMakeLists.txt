@@ -41,13 +41,6 @@ find_package(unofficial-angle REQUIRED CONFIG)
 
 add_subdirectory(thirdparty/skia/skia)
 
-# set(SDL_TEST OFF CACHE BOOL "Disable SDL3 test building")
-# set(SDL_EXAMPLES OFF CACHE BOOL "Disable SDL3 examples")
-# set(SDL3_DISABLE_DOCS ON CACHE BOOL "Disable building SDL3 documentation")
-# set(SDL_SHARED OFF CACHE BOOL "Build SDL3 as a shared library")
-# set(SDL_STATIC ON CACHE BOOL "Build SDL3 as a static library")
-# add_subdirectory(thirdparty/SDL)
-
 if (WIN32)
     add_executable(VcpkgExperiment sources/main.cpp)
     target_compile_features(VcpkgExperiment PRIVATE cxx_std_20)

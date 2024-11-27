@@ -21,6 +21,11 @@
       "inherits": "vcpkg",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Visual Studio Clang"
+        }
       }
     },
     {

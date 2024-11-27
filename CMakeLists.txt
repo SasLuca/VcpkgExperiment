@@ -1,11 +1,45 @@
 cmake_minimum_required(VERSION 3.29)
 project(VcpkgExperiment)
 
+#region Flags to improve debugging
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
+        # message(STATUS "Compiler is Clang-CL")
+        add_compile_options(
+                /D_ITERATOR_DEBUG_LEVEL=0 /D_SECURE_SCL=0
+                /Od        # Disable all optimizations
+                /Z7        # Generate debugging information
+                /Ob0       # Disable function inlining
+                /Oy-       # Do not omit frame pointers
+                -gcodeview # Generate CodeView debug information (Clang-specific)
+                /MT       # Multi core dll runtime for debug
+                /RTC1      # Enable basic runtime error checks
+        )
+    endif()
+
+
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
+        # message(STATUS "Compiler is Clang, but not Clang-CL")
+        add_compile_options(
+                /MD /Zi /Od /Ob0 /D_ITERATOR_DEBUG_LEVEL=2
+                -O0                     # Disable all optimizations
+                -g                      # Generate debugging information
+                -fno-inline             # Disable function inlining
+                -fno-omit-frame-pointer # Do not omit frame pointers
+                -gcodeview              # Generate CodeView debug information
+                # -fsanitize=undefined    # Enable undefined behavior checks
+                # -fsanitize=address      # Enable address sanitizer (memory checks)
+        )
+    endif()
+endif()
+#endregion
+
 find_package(fmt CONFIG REQUIRED)
-find_package(FFMPEG REQUIRED)
+#find_package(FFMPEG REQUIRED)
 find_package(SDL3 CONFIG REQUIRED)
 find_package(unofficial-angle REQUIRED CONFIG)
-find_package(unofficial-skia CONFIG REQUIRED)
+
+add_subdirectory(thirdparty/skia/skia)
 
 # set(SDL_TEST OFF CACHE BOOL "Disable SDL3 test building")
 # set(SDL_EXAMPLES OFF CACHE BOOL "Disable SDL3 examples")
@@ -17,10 +51,13 @@ find_package(unofficial-skia CONFIG REQUIRED)
 if (WIN32)
     add_executable(VcpkgExperiment sources/main.cpp)
     target_compile_features(VcpkgExperiment PRIVATE cxx_std_20)
-    target_include_directories(VcpkgExperiment PRIVATE ${FFMPEG_INCLUDE_DIRS})
-    target_link_directories(VcpkgExperiment PRIVATE ${FFMPEG_LIBRARY_DIRS})
-    target_link_libraries(VcpkgExperiment PRIVATE ${FFMPEG_LIBRARIES} fmt::fmt SDL3::SDL3 unofficial::angle::libEGL unofficial::angle::libGLESv2 unofficial::skia::skia)
+ #   target_include_directories(VcpkgExperiment PRIVATE ${FFMPEG_INCLUDE_DIRS})
+  #  target_link_directories(VcpkgExperiment PRIVATE ${FFMPEG_LIBRARY_DIRS})
+    target_link_libraries(VcpkgExperiment PRIVATE
+            #${FFMPEG_LIBRARIES}
+            fmt::fmt SDL3::SDL3 unofficial::angle::libEGL unofficial::angle::libGLESv2 skia)
     target_compile_definitions(VcpkgExperiment PUBLIC SK_GL SK_GANESH)
+    target_compile_definitions(VcpkgExperiment PUBLIC assets_path="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 endif()
 
 if (IOS)
@@ -41,7 +78,7 @@ if (IOS)
         PRIVATE
         fmt::fmt
         SDL3::SDL3
-        ${FFMPEG_LIBRARIES}
+        #${FFMPEG_LIBRARIES}
         unofficial::angle::libGLESv2
         "-framework UIKit"
         "-framework AVFoundation"

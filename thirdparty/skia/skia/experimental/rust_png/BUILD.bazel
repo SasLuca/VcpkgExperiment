@@ -1,0 +1,11 @@
+load(
+    "//bazel:skia_rules.bzl",
+    "skia_filegroup",
+)
+
+skia_filegroup(
+    name = "hdrs",
+    srcs = [
+        "SkPngRustDecoder.h",
+    ],
+)

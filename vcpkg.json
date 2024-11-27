@@ -13,10 +13,6 @@
     },
     {
       "name": "angle"
-    },
-    {
-      "name": "skia",
-      "features": ["gl"]
     }
   ]
 }
